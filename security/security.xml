@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="group_gym_user" model="res.groups">
+        <field name="name">Gym User</field>
+        <field name="category_id" ref="base.module_category_services"/>
+        <field name="comment">Spor salonu kayıtlarını görüntüleyebilir.</field>
+    </record>
+
+    <record id="group_gym_manager" model="res.groups">
+        <field name="name">Gym Manager</field>
+        <field name="category_id" ref="base.module_category_services"/>
+        <field name="implied_ids" eval="[(4, ref('group_gym_user'))]"/>
+        <field name="users" eval="[(4, ref('base.user_admin'))]"/>
+        <field name="comment">Tüm spor salonu işlemlerini yapabilir.</field>
+    </record>
+</odoo>

@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="gym_register_page" name="Spor Salonu Kayit">
+        <![CDATA[<!DOCTYPE html>]]>
+        <html>
+        <head>
+            <meta charset="UTF-8"/>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+            <title>OSTiM Teknik Universitesi - Spor Salonu</title>
+            <style>
+                * { box-sizing: border-box; margin: 0; padding: 0; }
+                body {
+                    min-height: 100vh;
+                    background: #f4f4f4;
+                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                }
+
+                /* --- NAVBAR --- */
+                .navbar {
+                    width: 100%;
+                    background: #1a2456;
+                    border-bottom: 4px solid #e8820c;
+                }
+                .navbar-inner {
+                    max-width: 680px;
+                    margin: 0 auto;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    padding: 12px 24px;
+                }
+                .logo-area {
+                    display: flex;
+                    align-items: center;
+                    gap: 14px;
+                }
+                .logo-text .l1 {
+                    font-size: 15px;
+                    font-weight: 900;
+                    color: #fff;
+                    letter-spacing: 1px;
+                    line-height: 1.3;
+                }
+                .logo-text .l2 {
+                    font-size: 13px;
+                    font-weight: 700;
+                    color: #fff;
+                    letter-spacing: 1px;
+                    line-height: 1.3;
+                }
+                .logo-text .l3 {
+                    font-size: 9px;
+                    font-weight: 600;
+                    color: #e8820c;
+                    letter-spacing: 3px;
+                    margin-top: 3px;
+                }
+                .lang-switch {
+                    display: flex;
+                    align-items: center;
+                    gap: 6px;
+                }
+                .lang-btn {
+                    padding: 5px 14px;
+                    border-radius: 3px;
+                    border: 1.5px solid rgba(255,255,255,0.3);
+                    background: transparent;
+                    color: rgba(255,255,255,0.6);
+                    font-size: 12px;
+                    font-weight: 800;
+                    cursor: pointer;
+                    letter-spacing: 1px;
+                    transition: all 0.2s;
+                }
+                .lang-btn.active {
+                    border-color: #e8820c;
+                    background: #e8820c;
+                    color: #fff;
+                }
+                .lang-sep { color: rgba(255,255,255,0.2); font-size: 16px; }
+
+                /* --- SAYFA BASLIK BANDI --- */
+                .page-header {
+                    width: 100%;
+                    background: #fff;
+                    border-bottom: 1px solid #e0e0e0;
+                    padding: 20px 24px;
+                    text-align: center;
+                }
+                .page-header h2 {
+                    font-size: 20px;
+                    font-weight: 800;
+                    color: #1a2456;
+                    letter-spacing: 1px;
+                    margin-bottom: 4px;
+                }
+                .page-header p {
+                    font-size: 13px;
+                    color: #888;
+                }
+                .orange-line {
+                    width: 60px;
+                    height: 3px;
+                    background: #e8820c;
+                    margin: 10px auto 0;
+                    border-radius: 2px;
+                }
+
+                /* --- FORM ALANI --- */
+                .page-body {
+                    width: 100%;
+                    max-width: 560px;
+                    padding: 32px 20px 40px;
+                    flex: 1;
+                }
+
+                .card {
+                    background: #fff;
+                    border: 1px solid #e0e0e0;
+                    border-top: 4px solid #8b1a3a;
+                    border-radius: 8px;
+                    padding: 32px;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                }
+
+                .card-label {
+                    font-size: 11px;
+                    font-weight: 800;
+                    color: #8b1a3a;
+                    text-transform: uppercase;
+                    letter-spacing: 2px;
+                    margin-bottom: 20px;
+                    padding-bottom: 12px;
+                    border-bottom: 1px solid #f0e0e4;
+                }
+
+                .two-col {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 14px;
+                }
+
+                .form-group { margin-bottom: 18px; }
+
+                .form-group label {
+                    display: block;
+                    color: #555;
+                    font-size: 11px;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                    margin-bottom: 7px;
+                }
+
+                .form-group input {
+                    width: 100%;
+                    padding: 12px 14px;
+                    background: #fafafa;
+                    border: 1.5px solid #ddd;
+                    border-radius: 6px;
+                    color: #222;
+                    font-size: 14px;
+                    outline: none;
+                    transition: all 0.25s;
+                }
+
+                .form-group input::placeholder { color: #bbb; }
+
+                .form-group input:focus {
+                    border-color: #8b1a3a;
+                    background: #fff;
+                    box-shadow: 0 0 0 3px rgba(139,26,58,0.1);
+                }
+
+                .divider {
+                    height: 1px;
+                    background: #f0e0e4;
+                    margin: 22px 0;
+                }
+
+                .btn-submit {
+                    width: 100%;
+                    padding: 14px;
+                    background: #1a2456;
+                    border: none;
+                    border-radius: 6px;
+                    color: #fff;
+                    font-size: 13px;
+                    font-weight: 800;
+                    letter-spacing: 2px;
+                    cursor: pointer;
+                    transition: all 0.25s;
+                    border-bottom: 3px solid #e8820c;
+                }
+
+                .btn-submit:hover {
+                    background: #0f1a3a;
+                    transform: translateY(-1px);
+                }
+
+                /* --- BASARI --- */
+                .success-box { text-align: center; padding: 16px 0; }
+
+                .success-ring {
+                    width: 76px;
+                    height: 76px;
+                    border: 3px solid #8b1a3a;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin: 0 auto 18px;
+                    background: rgba(139,26,58,0.06);
+                }
+
+                .success-ring span {
+                    font-size: 30px;
+                    color: #8b1a3a;
+                    font-weight: 900;
+                }
+
+                .success-box h3 {
+                    color: #1a2456;
+                    font-size: 20px;
+                    font-weight: 800;
+                    margin-bottom: 8px;
+                }
+
+                .success-box p {
+                    color: #666;
+                    font-size: 13px;
+                    line-height: 1.7;
+                    margin-bottom: 16px;
+                }
+
+                .time-badge {
+                    display: inline-block;
+                    background: rgba(232,130,12,0.08);
+                    border: 1px solid rgba(232,130,12,0.3);
+                    border-radius: 4px;
+                    padding: 8px 22px;
+                    font-size: 14px;
+                    color: #e8820c;
+                    font-weight: 700;
+                }
+
+                /* --- HATA --- */
+                .error-box {
+                    background: #fff5f7;
+                    border: 1px solid #f0c0c8;
+                    border-radius: 6px;
+                    padding: 12px 16px;
+                    color: #8b1a3a;
+                    font-size: 13px;
+                    margin-bottom: 18px;
+                    text-align: center;
+                }
+
+                /* --- FOOTER --- */
+                .footer {
+                    width: 100%;
+                    background: #1a2456;
+                    border-top: 3px solid #e8820c;
+                    padding: 16px 24px;
+                    margin-top: auto;
+                }
+                .footer-inner {
+                    max-width: 560px;
+                    margin: 0 auto;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 14px;
+                }
+                .footer span {
+                    font-size: 10px;
+                    color: rgba(255,255,255,0.4);
+                    letter-spacing: 1.5px;
+                    font-weight: 600;
+                }
+                .footer-dot {
+                    width: 3px; height: 3px;
+                    background: #e8820c;
+                    border-radius: 50%;
+                }
+            </style>
+        </head>
+        <body>
+
+            <!-- NAVBAR -->
+            <div class="navbar">
+                <div class="navbar-inner">
+                    <div class="logo-area">
+                        <!-- OSTiM logosu - orijinaline yakın SVG -->
+                <img t-att-src="'/gym_management/static/src/img/ostim_logo.png'"
+                     alt="OSTiM Teknik Universitesi"
+                     style="height:52px; width:auto;"/>
+                        
+                        <div class="logo-text">
+                            <div class="l1">OSTiM TEKNiK</div>
+                            <div class="l2">UNiVERSiTESi</div>
+                            <div class="l3">ANKARA</div>
+                        </div>
+                    </div>
+
+                    <div class="lang-switch">
+                        <button class="lang-btn active" id="btn-tr" onclick="setLang('tr')">TR</button>
+                        <span class="lang-sep">|</span>
+                        <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SAYFA BASLIK -->
+            <div class="page-header">
+                <h2 id="main-title">SPOR SALONU GiRiS</h2>
+                <p id="main-sub">Spor salonuna giris icin ogrenci bilgilerinizi giriniz</p>
+                <div class="orange-line"></div>
+            </div>
+
+            <!-- FORM -->
+            <div class="page-body">
+                <div class="card">
+                    <t t-if="success">
+                        <div class="success-box">
+                            <div class="success-ring"><span>&#10003;</span></div>
+                            <div id="success-tr">
+                                <h3>Giris Basarili!</h3>
+                                <p>Hos geldiniz!<br/>Spor salonundan yararlanabilirsiniz.</p>
+                                <span class="time-badge">Sure: <t t-esc="allowed_minutes"/> dakika</span>
+                            </div>
+                            <div id="success-en" style="display:none;">
+                                <h3>Entry Successful!</h3>
+                                <p>Welcome!<br/>You can now use the sports facility.</p>
+                                <span class="time-badge">Duration: <t t-esc="allowed_minutes"/> minutes</span>
+                            </div>
+                        </div>
+                    </t>
+
+                    <t t-else="">
+                        <div class="card-label" id="card-label">Ogrenci Bilgileri</div>
+
+                        <t t-if="error">
+                            <div class="error-box"><t t-esc="error"/></div>
+                        </t>
+
+                        <form method="POST" action="/gym/register">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <input type="hidden" name="lang" id="lang-input" value="tr"/>
+
+                            <div class="two-col">
+                                <div class="form-group">
+                                    <label id="lbl-name">AD</label>
+                                    <input type="text" name="student_name" id="inp-name"
+                                           placeholder="Adiniz" required="1"/>
+                                </div>
+                                <div class="form-group">
+                                    <label id="lbl-surname">SOYAD</label>
+                                    <input type="text" name="student_surname" id="inp-surname"
+                                           placeholder="Soyadiniz" required="1"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label id="lbl-number">OGRENCI NUMARASI</label>
+                                <input type="text" name="student_number" id="inp-number"
+                                       placeholder="Ornek: 2021123456" required="1"/>
+                            </div>
+
+                            <div class="form-group">
+                                <label id="lbl-dept">BOLUM</label>
+                                <input type="text" name="department" id="inp-dept"
+                                       placeholder="Ornek: Bilgisayar Muhendisligi" required="1"/>
+                            </div>
+
+                            <div class="divider"/>
+
+                            <button type="submit" class="btn-submit" id="btn-submit">
+                                SALONA GIRIS YAP
+                            </button>
+                        </form>
+                    </t>
+                </div>
+            </div>
+
+            <!-- FOOTER -->
+            <div class="footer">
+                <div class="footer-inner">
+                    <span>OSTiM TEKNiK UNiVERSiTESi</span>
+                    <div class="footer-dot"></div>
+                    <span>SPOR MERKEZi</span>
+                    <div class="footer-dot"></div>
+                    <span>ANKARA</span>
+                </div>
+            </div>
+
+            <script>
+                var T = {
+                    tr: {
+                        title: 'SPOR SALONU GiRiS',
+                        sub: 'Spor salonuna giris icin ogrenci bilgilerinizi giriniz',
+                        cardLabel: 'Ogrenci Bilgileri',
+                        name: 'AD', surname: 'SOYAD',
+                        number: 'OGRENCI NUMARASI', dept: 'BOLUM',
+                        namePh: 'Adiniz', surnamePh: 'Soyadiniz',
+                        numberPh: 'Ornek: 2021123456',
+                        deptPh: 'Ornek: Bilgisayar Muhendisligi',
+                        submit: 'SALONA GIRIS YAP'
+                    },
+                    en: {
+                        title: 'GYM ENTRY',
+                        sub: 'Please enter your student information to access the gym',
+                        cardLabel: 'Student Information',
+                        name: 'FIRST NAME', surname: 'LAST NAME',
+                        number: 'STUDENT NUMBER', dept: 'DEPARTMENT',
+                        namePh: 'Your first name', surnamePh: 'Your last name',
+                        numberPh: 'Example: 2021123456',
+                        deptPh: 'Example: Computer Engineering',
+                        submit: 'ENTER THE GYM'
+                    }
+                };
+
+                function setLang(lang) {
+                    var t = T[lang];
+                    var g = function(id) { return document.getElementById(id); };
+
+                    if (g('main-title')) g('main-title').textContent = t.title;
+                    if (g('main-sub')) g('main-sub').textContent = t.sub;
+                    if (g('card-label')) g('card-label').textContent = t.cardLabel;
+                    if (g('lbl-name')) g('lbl-name').textContent = t.name;
+                    if (g('lbl-surname')) g('lbl-surname').textContent = t.surname;
+                    if (g('lbl-number')) g('lbl-number').textContent = t.number;
+                    if (g('lbl-dept')) g('lbl-dept').textContent = t.dept;
+                    if (g('inp-name')) g('inp-name').placeholder = t.namePh;
+                    if (g('inp-surname')) g('inp-surname').placeholder = t.surnamePh;
+                    if (g('inp-number')) g('inp-number').placeholder = t.numberPh;
+                    if (g('inp-dept')) g('inp-dept').placeholder = t.deptPh;
+                    if (g('btn-submit')) g('btn-submit').textContent = t.submit;
+                    if (g('lang-input')) g('lang-input').value = lang;
+
+                    if (g('success-tr')) g('success-tr').style.display = lang === 'tr' ? 'block' : 'none';
+                    if (g('success-en')) g('success-en').style.display = lang === 'en' ? 'block' : 'none';
+
+                    g('btn-tr').classList.toggle('active', lang === 'tr');
+                    g('btn-en').classList.toggle('active', lang === 'en');
+                }
+            </script>
+        </body>
+        </html>
+    </template>
+</odoo>

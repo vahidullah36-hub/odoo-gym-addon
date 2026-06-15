@@ -1,0 +1,25 @@
+/* Aktif öğrenci - Yeşil */
+.o_data_row.decoration-success {
+    background-color: #d4edda !important;
+}
+
+/* Son 10 dakika - Sarı */
+.o_data_row.decoration-warning {
+    background-color: #fff3cd !important;
+}
+
+/* Süresi dolmuş - Kırmızı */
+.o_data_row.decoration-danger {
+    background-color: #f8d7da !important;
+}
+
+/* Kanban kart renkleri */
+.border-success {
+    border-left: 5px solid #28a745 !important;
+}
+.border-warning {
+    border-left: 5px solid #ffc107 !important;
+}
+.border-danger {
+    border-left: 5px solid #dc3545 !important;
+}
