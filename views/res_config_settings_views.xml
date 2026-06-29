@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_gym" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.gym</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app data-string="Spor Salonu" string="Spor Salonu Ayarlari" name="gym_management">
+                    <block title="Salon Durumu">
+                        <setting string="Spor Salonu Durumu" help="Kapaliysa portal uzerinden ogrenci girisleri engellenir.">
+                            <field name="is_gym_open" string="Spor Salonu Acik" readonly="1"/>
+                            <button name="action_open_gym" string="Spor Salonunu Ac" type="object" class="btn-success"/>
+                            <button name="action_close_gym" string="Spor Salonunu Kapat" type="object" class="btn-danger"/>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+</odoo>

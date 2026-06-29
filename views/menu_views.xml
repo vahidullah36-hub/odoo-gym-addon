@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_gym_root"
+              name="Spor Salonu"
+              sequence="10"
+              groups="gym_management.group_gym_user"/>
+
+    <menuitem id="menu_gym_active"
+              name="Aktif Öğrenciler"
+              parent="menu_gym_root"
+              action="gym_management.action_gym_visit"
+              sequence="10"
+              groups="gym_management.group_gym_user"/>
+
+    <menuitem id="menu_gym_members"
+              name="Üye Listesi"
+              parent="menu_gym_root"
+              sequence="15"
+              groups="gym_management.group_gym_user"/>
+
+            <menuitem id="menu_gym_members_all"
+                      name="Tüm Üyeler"
+                      parent="menu_gym_members"
+                      action="action_gym_members_only"
+                      sequence="1"
+                      groups="gym_management.group_gym_user"/>
+
+            <menuitem id="menu_gym_members_male"
+                      name="Erkek Üyeler"
+                      parent="menu_gym_members"
+                      action="action_gym_members_male"
+                      sequence="2"
+                      groups="gym_management.group_gym_user"/>
+
+            <menuitem id="menu_gym_members_female"
+                      name="Kadın Üyeler"
+                      parent="menu_gym_members"
+                      action="action_gym_members_female"
+                      sequence="3"
+                      groups="gym_management.group_gym_user"/>
+    <menuitem id="menu_gym_history"
+              name="Geçmiş Ziyaretler"
+              parent="menu_gym_root"
+              action="gym_management.action_gym_visit_history"
+              sequence="20"
+              groups="gym_management.group_gym_user"/>
+
+    <menuitem id="menu_gym_qr"
+              name="QR Kod Göster"
+              parent="menu_gym_root"
+              action="gym_management.action_gym_qr_code_server"
+              sequence="30"
+              groups="gym_management.group_gym_manager"/>
+
+    <menuitem id="menu_gym_settings"
+              name="Ayarlar"
+              parent="menu_gym_root"
+              action="base_setup.action_general_configuration"
+              sequence="40"
+              groups="gym_management.group_gym_manager"/>
+</odoo>

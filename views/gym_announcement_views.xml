@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_gym_announcement_list" model="ir.ui.view">
+        <field name="name">gym.announcement.list</field>
+        <field name="model">gym.announcement</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="name" placeholder="Duyuru metnini buraya yazin..."/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_gym_announcement" model="ir.actions.act_window">
+        <field name="name">TV Duyurulari</field>
+        <field name="res_model">gym.announcement</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <menuitem id="menu_gym_announcement" 
+              name="Duyuru Ekle" 
+              parent="gym_management.menu_gym_root" 
+              action="action_gym_announcement" 
+              sequence="40"/>
+</odoo>

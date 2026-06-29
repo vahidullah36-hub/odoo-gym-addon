@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_gym_tv_display" model="ir.actions.act_url">
+        <field name="name">Genis Ekran Modu</field>
+        <field name="url">/gym/tv</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="view_gym_visit_list" model="ir.ui.view">
+        <field name="name">gym.visit.list</field>
+        <field name="model">gym.visit</field>
+        <field name="arch" type="xml">
+            <list string="Ziyaretler"
+                  decoration-success="color_state == 'green'"
+                  decoration-warning="color_state == 'yellow'"
+                  decoration-danger="color_state == 'red'"
+                  decoration-muted="state == 'checked_out'">
+                <header>
+                    <button name="%(action_gym_tv_display)d"
+                            string="Genis Ekran Modu"
+                            type="action"
+                            class="btn btn-primary ms-auto o_gym_fullscreen_button"
+                            icon="fa-television"
+                            display="always"
+                            groups="gym_management.group_gym_user"/>
+                </header>
+                <field name="name"/>
+                <field name="full_name"/>
+                <field name="student_number"/>
+                <field name="department"/>
+                <field name="gender"/> <field name="check_in_time"/>
+                <field name="elapsed_minutes" string="Gecen (dk)"/>
+                <field name="remaining_minutes" string="Kalan (dk)"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'active'"
+                       decoration-warning="state == 'expired'"
+                       decoration-danger="state == 'checked_out'"/>
+                <field name="color_state" column_invisible="1"/>
+                <button name="action_check_out"
+                        string="Cikis Yap"
+                        type="object"
+                        icon="fa-sign-out"
+                        invisible="state == 'checked_out'"
+                        groups="gym_management.group_gym_manager"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_gym_visit_form" model="ir.ui.view">
+        <field name="name">gym.visit.form</field>
+        <field name="model">gym.visit</field>
+        <field name="arch" type="xml">
+            <form string="Ziyaret Detayi">
+                <header>
+                    <button name="action_check_out"
+                            string="Cikis Yap"
+                            type="object"
+                            class="btn-primary"
+                            invisible="state == 'checked_out'"
+                            groups="gym_management.group_gym_manager"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="active,expired,checked_out"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="student_name" placeholder="Ad" class="oe_inline me-2"/>
+                            <field name="student_surname" placeholder="Soyad" class="oe_inline"/>
+                        </h1>
+                        <h3 class="text-muted">
+                            <field name="name" readonly="1"/>
+                        </h3>
+                    </div>
+                    <group>
+                        <group string="Ogrenci Bilgileri">
+                            <field name="student_number"/>
+                            <field name="department"/>
+                            <field name="gender"/> 
+                        </group>
+                        <group string="Zaman Bilgileri">
+                            <field name="check_in_time"/>
+                            <field name="check_out_time"/>
+                            <field name="allowed_minutes"/>
+                            <field name="elapsed_minutes"/>
+                            <field name="remaining_minutes"/>
+                            <field name="total_minutes" invisible="state != 'checked_out'"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_gym_visit_kanban" model="ir.ui.view">
+        <field name="name">gym.visit.kanban</field>
+        <field name="model">gym.visit</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state">
+                <field name="color_state"/>
+                <field name="state"/>
+                <templates>
+                    <t t-name="card">
+                        <div t-attf-class="
+                            #{record.color_state.raw_value == 'green' ? 'border-success' : ''}
+                            #{record.color_state.raw_value == 'yellow' ? 'border-warning' : ''}
+                            #{record.color_state.raw_value == 'red' ? 'border-danger' : ''}
+                            p-2">
+                            <strong><field name="full_name"/></strong>
+                            <div><field name="student_number"/></div>
+                            <div><field name="department"/></div>
+                            <div>Giris: <field name="check_in_time"/></div>
+                            <div>Gecen: <field name="elapsed_minutes"/> dk</div>
+                            <div>Kalan: <field name="remaining_minutes"/> dk</div>
+                            <field name="state" widget="badge"
+                                   decoration-success="state == 'active'"
+                                   decoration-warning="state == 'expired'"
+                                   decoration-danger="state == 'checked_out'"/>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_gym_visit_search" model="ir.ui.view">
+        <field name="name">gym.visit.search</field>
+        <field name="model">gym.visit</field>
+        <field name="arch" type="xml">
+            <search string="Ziyaret Ara">
+                <field name="full_name" string="Ad Soyad"/>
+                <field name="student_number" string="Ogrenci No"/>
+                <field name="department" string="Bolum"/>
+                <separator/>
+                <filter name="active_students" string="Iceridekiler" domain="[('state','in',['active','expired'])]"/>
+                <filter name="expired_students" string="Suresi Dolanlar" domain="[('state','=','expired')]"/>
+                <filter name="checked_out" string="Cikis Yapanlar" domain="[('state','=','checked_out')]"/>
+                <filter name="male_visits" string="Erkekler" domain="[('gender','=','male')]"/>
+                <filter name="female_visits" string="Kadınlar" domain="[('gender','=','female')]"/>
+                <separator/>
+                <filter name="today" string="Bugun" domain="[('check_in_time','&gt;=', datetime.datetime.now().strftime('%Y-%m-%d 00:00:00'))]"/>
+                <group expand="0" string="Grupla">
+                    <filter string="Cinsiyet" name="group_by_gender" context="{'group_by':'gender'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_gym_visit" model="ir.actions.act_window">
+        <field name="name">Ziyaretler</field>
+        <field name="res_model">gym.visit</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="domain">[('student_number', '!=', '0000'), ('state', 'in', ['active', 'expired'])]</field>
+        <field name="context">{}</field>
+    </record>
+
+    <record id="action_gym_visit_list_view" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="view_gym_visit_list"/>
+        <field name="act_window_id" ref="action_gym_visit"/>
+    </record>
+
+    <record id="action_gym_visit_kanban_view" model="ir.actions.act_window.view">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">kanban</field>
+        <field name="view_id" ref="view_gym_visit_kanban"/>
+        <field name="act_window_id" ref="action_gym_visit"/>
+    </record>
+
+    <record id="action_gym_visit_form_view" model="ir.actions.act_window.view">
+        <field name="sequence" eval="3"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_gym_visit_form"/>
+        <field name="act_window_id" ref="action_gym_visit"/>
+    </record>
+
+    <record id="action_gym_visit_history" model="ir.actions.act_window">
+        <field name="name">Gecmis Ziyaretler</field>
+        <field name="res_model">gym.visit</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state','=','checked_out'), ('student_number', '!=', '0000')]</field>
+    </record>
+
+    <record id="action_gym_visit_history_list_view" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="view_gym_visit_list"/>
+        <field name="act_window_id" ref="action_gym_visit_history"/>
+    </record>
+    
+    <record id="action_gym_visit_history_form_view" model="ir.actions.act_window.view">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_gym_visit_form"/>
+        <field name="act_window_id" ref="action_gym_visit_history"/>
+    </record>
+
+    <record id="view_gym_qr_form" model="ir.ui.view">
+        <field name="name">gym.visit.qr.form</field>
+        <field name="model">gym.visit</field>
+        <field name="priority">99</field>
+        <field name="arch" type="xml">
+            <form string="QR Kod">
+                <sheet>
+                    <div class="text-center">
+                        <h2>Spor Salonu Giris QR Kodu</h2>
+                        <div class="mt-4 mb-4">
+                            <img src="/gym/qr" alt="Spor Salonu QR Kod" style="width:300px; height:300px; border:1px solid #ddd; padding:10px;"/>
+                        </div>
+                        <div class="mt-2 mb-4">
+                            <p><strong>Kayit URL: </strong>http://localhost:8069/gym/register</p>
+                        </div>
+                    </div>
+                </sheet>
+                <footer>
+                    <button string="QR Kodu Yazdir" name="action_print_qr" type="object" class="btn-primary"/>
+                    <button string="Kapat" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_gym_qr_code_server" model="ir.actions.server">
+        <field name="name">QR Kod Göster</field>
+        <field name="model_id" ref="model_gym_visit"/>
+        <field name="state">code</field>
+        <field name="code">action = model.action_open_qr()</field>
+    </record>
+
+    <record id="view_gym_member_search" model="ir.ui.view">
+        <field name="name">gym.member.search</field>
+        <field name="model">gym.visit</field>
+        <field name="arch" type="xml">
+            <search string="Üye Ara">
+                <field name="full_name" string="Ad Soyad"/>
+                <field name="student_number" string="Öğrenci Numarası"/>
+                <field name="department" string="Bölüm"/>
+                <filter name="male_members" string="Erkek Üyeler" domain="[('gender','=','male')]"/>
+                <filter name="female_members" string="Kadın Üyeler" domain="[('gender','=','female')]"/>
+                <group expand="0" string="Grupla">
+                    <filter string="Cinsiyet" name="group_by_member_gender" context="{'group_by':'gender'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_gym_member_list" model="ir.ui.view">
+        <field name="name">gym.member.list</field>
+        <field name="model">gym.visit</field>
+        <field name="arch" type="xml">
+            <list string="Üye Listesi" create="false" edit="false" delete="false">
+                <field name="full_name" string="Ad Soyad"/>
+                <field name="student_number" string="Öğrenci Numarası"/>
+                <field name="department" string="Bölümü"/>
+                <field name="gender" string="Cinsiyet"/> 
+                <button name="action_delete_student_entirely"
+                        string="Tamamen Sil"
+                        type="object"
+                        icon="fa-trash"
+                        confirm="Dikkat: Bu öğrencinin profil bilgileri ve geçmişteki TÜM ziyaret kayıtları silinecektir. Onaylıyor musunuz?"
+                        groups="gym_management.group_gym_manager"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_gym_member_form" model="ir.ui.view">
+        <field name="name">gym.member.form</field>
+        <field name="model">gym.visit</field>
+        <field name="arch" type="xml">
+            <form string="Üye Profil Detayı">
+                <header>
+                    <button name="action_renew_entry" string="Giriş Hakkını Yenile" type="object" class="btn-success" invisible="allow_reentry == True" groups="gym_management.group_gym_manager"/>
+                    <button name="action_delete_student_entirely" string="Üyeyi Sistemden Tamamen Sil" type="object" class="btn-danger" confirm="Dikkat: Bu öğrencinin profil bilgileri ve geçmişteki TÜM ziyaret kayıtları silinecektir. Onaylıyor musunuz?" groups="gym_management.group_gym_manager"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="student_name" placeholder="Ad" class="oe_inline me-2"/>
+                            <field name="student_surname" placeholder="Soyad" class="oe_inline"/>
+                        </h1>
+                        <h3 class="text-muted">
+                            <field name="name" readonly="1"/>
+                        </h3>
+                    </div>
+                    <group>
+                        <group string="Kişisel Bilgiler">
+                            <field name="student_number"/>
+                            <field name="department"/>
+                            <field name="gender"/> 
+                            <field name="blood_type"/>
+                            <field name="allow_reentry" invisible="1"/>
+                        </group>
+                        <group string="İletişim Bilgileri">
+                            <field name="phone" widget="phone"/>
+                            <field name="phone2" widget="phone"/>
+                        </group>
+                    </group>
+                    <group string="Adres ve Sağlık Durumu">
+                        <field name="address"/>
+                        <field name="medical_conditions" placeholder="Herhangi bir kronik hastalık veya alerji varsa belirtiniz..."/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_gym_members_only" model="ir.actions.act_window">
+        <field name="name">Üye Listesi</field>
+        <field name="res_model">gym.visit</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('is_member', '=', True), ('student_number', '!=', '0000')]</field>
+        <field name="context">{'search_default_active_students': 0}</field>
+        <field name="search_view_id" ref="view_gym_member_search"/>
+    </record>
+
+    <record id="action_gym_members_only_list_view" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="view_gym_member_list"/>
+        <field name="act_window_id" ref="action_gym_members_only"/>
+    </record>
+
+    <record id="action_gym_members_only_form_view" model="ir.actions.act_window.view">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_gym_member_form"/>
+        <field name="act_window_id" ref="action_gym_members_only"/>
+    </record>
+
+
+    <record id="action_gym_members_male" model="ir.actions.act_window">
+        <field name="name">Erkek Üyeler</field>
+        <field name="res_model">gym.visit</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('is_member', '=', True), ('student_number', '!=', '0000'), ('gender', '=', 'male')]</field>
+        <field name="search_view_id" ref="view_gym_member_search"/>
+    </record>
+
+    <record id="action_gym_members_male_list_view" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="view_gym_member_list"/>
+        <field name="act_window_id" ref="action_gym_members_male"/>
+    </record>
+
+    <record id="action_gym_members_male_form_view" model="ir.actions.act_window.view">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_gym_member_form"/>
+        <field name="act_window_id" ref="action_gym_members_male"/>
+    </record>
+
+
+    <record id="action_gym_members_female" model="ir.actions.act_window">
+        <field name="name">Kadın Üyeler</field>
+        <field name="res_model">gym.visit</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('is_member', '=', True), ('student_number', '!=', '0000'), ('gender', '=', 'female')]</field>
+        <field name="search_view_id" ref="view_gym_member_search"/>
+    </record>
+
+    <record id="action_gym_members_female_list_view" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="view_gym_member_list"/>
+        <field name="act_window_id" ref="action_gym_members_female"/>
+    </record>
+
+    <record id="action_gym_members_female_form_view" model="ir.actions.act_window.view">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_gym_member_form"/>
+        <field name="act_window_id" ref="action_gym_members_female"/>
+    </record>
+
+</odoo>

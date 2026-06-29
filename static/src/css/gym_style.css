@@ -1,0 +1,53 @@
+/* Aktif öğrenci - Yeşil */
+.o_data_row.decoration-success {
+    background-color: #d4edda !important;
+}
+
+/* Son 10 dakika - Sarı */
+.o_data_row.decoration-warning {
+    background-color: #fff3cd !important;
+}
+
+/* Süresi dolmuş - Kırmızı */
+.o_data_row.decoration-danger {
+    background-color: #f8d7da !important;
+}
+
+/* Kanban kart renkleri */
+.border-success {
+    border-left: 5px solid #28a745 !important;
+}
+.border-warning {
+    border-left: 5px solid #ffc107 !important;
+}
+.border-danger {
+    border-left: 5px solid #dc3545 !important;
+}
+
+/* Ziyaretler listesindeki genis ekran butonunu sagda ve belirgin gosterir. */
+.o_gym_fullscreen_button {
+    background-color: #8b1a3a !important;
+    border-color: #8b1a3a !important;
+    color: #ffffff !important;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.o_gym_fullscreen_button:hover {
+    background-color: #6f1430 !important;
+    border-color: #6f1430 !important;
+}
+
+@media (min-width: 992px) {
+    .o_control_panel_main:has(.o_gym_fullscreen_button) {
+        position: relative;
+        padding-right: 190px;
+    }
+
+    .o_control_panel_main:has(.o_gym_fullscreen_button) .o_gym_fullscreen_button {
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin-left: 0 !important;
+    }
+}

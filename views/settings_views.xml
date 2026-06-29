@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_gym_only_settings_form" model="ir.ui.view">
+        <field name="name">gym.only.settings.form</field>
+        <field name="model">res.config.settings</field>
+        <field name="arch" type="xml">
+            <form string="Spor Salonu Ayarları" class="oe_form_configuration">
+                <header>
+                    <button string="Kaydet" type="object" name="execute" class="oe_highlight" data-hotkey="q"/>
+                    <button string="İptal" type="object" name="cancel" class="oe_link" special="cancel" data-hotkey="z"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>Spor Salonu Ayarları</h1>
+                    </div>
+                    <group>
+                        <group string="Öğrenci Süre Sınırı">
+                            <field name="gym_allowed_minutes" string="Kullanım Süresi (Dakika)" help="Öğrencilerin spor salonunda kalabileceği maksimum süre."/>
+                        </group>
+                        <group string="Salon Durumu">
+                            <field name="is_gym_open" string="Spor Salonu Açık" readonly="1"/>
+                            <button name="action_open_gym" string="Spor Salonunu Aç" type="object" class="btn-success"/>
+                            <button name="action_close_gym" string="Spor Salonunu Kapat" type="object" class="btn-danger"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_gym_custom_settings" model="ir.actions.act_window">
+        <field name="name">Ayarlar</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="view_id" ref="view_gym_only_settings_form"/>
+    </record>
+
+</odoo>

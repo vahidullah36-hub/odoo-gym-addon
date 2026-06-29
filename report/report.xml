@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_gym_daily" model="ir.actions.report">
+        <field name="name">Gün Sonu Spor Salonu Raporu</field>
+        <field name="model">gym.visit</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">gym_management.report_gym_daily_template</field>
+        <field name="report_file">gym_management.report_gym_daily_template</field>
+        <field name="binding_model_id" ref="model_gym_visit"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="action_report_gym_visit" model="ir.actions.report">
+        <field name="name">Bireysel Ziyaret Raporu</field>
+        <field name="model">gym.visit</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">gym_management.report_gym_visit_template</field>
+        <field name="report_file">gym_management.report_gym_visit_template</field>
+        <field name="binding_model_id" ref="model_gym_visit"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="action_report_gym_qr" model="ir.actions.report">
+        <field name="name">QR Kod</field>
+        <field name="model">gym.visit</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">gym_management.report_gym_qr_template</field>
+        <field name="report_file">gym_management.report_gym_qr_template</field>
+        <field name="binding_model_id" ref="model_gym_visit"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

@@ -1,0 +1,1213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ==================================================================== -->
+    <!-- ANA OGRENCI PORTALI (Kayit ve Cikis)                                 -->
+    <!-- ==================================================================== -->
+    <template id="gym_portal_main_page" name="Spor Salonu Ana Portal">
+        <t t-call="website.layout">
+
+            <t t-set="no_header" t-value="True"/>
+            <t t-set="no_footer" t-value="True"/>
+
+            <t t-set="head">
+                <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&amp;display=swap"/>
+                <style>
+                    html, body {
+                        height: 100% !important;
+                        margin: 0 !important;
+                        background-color: #f4f6f9 !important;
+                    }
+
+                    #wrapwrap {
+                        min-height: 100vh !important;
+                        display: flex !important;
+                        flex-direction: column !important;
+                        background-color: #f4f6f9 !important;
+                    }
+
+                    main {
+                        flex: 1 1 auto !important;
+                        display: flex !important;
+                        flex-direction: column !important;
+                    }
+
+                    #wrap {
+                        flex: 1 1 auto !important;
+                        display: flex !important;
+                        flex-direction: column !important;
+                        width: 100% !important;
+                    }
+
+                    .gym-font { font-family: 'Inter', sans-serif; color: #333; }
+
+                    .navbar-custom {
+                        width: 100%;
+                        background-color: #ffffff;
+                        border-bottom: 5px solid #8b1a3a;
+                        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+                        padding: 8px 24px;
+                    }
+
+                    .navbar-inner {
+                        max-width: 1000px;
+                        margin: 0 auto;
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                    }
+
+                    .logo-area img {
+                        height: 70px;
+                        width: auto;
+                        object-fit: contain;
+                        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+                        transform: scale(1.8);
+                        transform-origin: left center;
+                    }
+
+                    .lang-switch { display: flex; align-items: center; gap: 10px; }
+
+                    .lang-btn {
+                        padding: 8px 20px;
+                        border-radius: 6px;
+                        border: 2px solid rgba(26, 36, 86, 0.2);
+                        background: transparent;
+                        color: #1a2456;
+                        font-size: 14px;
+                        font-weight: 800;
+                        cursor: pointer;
+                        letter-spacing: 1px;
+                        transition: all 0.3s ease;
+                    }
+
+                    .lang-btn.active, .lang-btn:hover {
+                        border-color: #8b1a3a;
+                        background-color: #8b1a3a;
+                        color: #fff;
+                    }
+
+                    .lang-sep { color: rgba(26, 36, 86, 0.3); font-size: 20px; font-weight: 300;}
+
+                    .page-header-custom {
+                        width: 100%;
+                        background: #1a2456;
+                        padding: 30px 24px 25px;
+                        text-align: center;
+                        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                    }
+
+                    .page-header-custom h2 {
+                        font-size: 26px;
+                        font-weight: 900;
+                        color: #ffffff;
+                        letter-spacing: 1.5px;
+                        text-transform: uppercase;
+                        margin-bottom: 8px;
+                    }
+
+                    .page-header-custom p {
+                        font-size: 15px;
+                        color: rgba(255,255,255,0.8);
+                        margin: 0;
+                    }
+
+                    .form-section-bg {
+                        flex: 1 1 auto !important;
+                        display: flex !important;
+                        align-items: flex-start !important;
+                        justify-content: center !important;
+                        background-color: #f4f6f9 !important;
+                        padding: 8vh 20px 60px !important;
+                        width: 100% !important;
+                    }
+
+                    .form-section-bg .container {
+                        width: 100% !important;
+                        display: flex !important;
+                        justify-content: center !important;
+                        align-items: flex-start !important;
+                    }
+
+                    .card-custom {
+                        background: #ffffff;
+                        border-radius: 12px;
+                        padding: 50px;
+                        box-shadow: 0 10px 30px rgba(26, 36, 86, 0.08);
+                        border-top: 6px solid #1a2456;
+                        width: 100%;
+                        max-width: 680px;
+                        margin: 0 auto;
+                    }
+
+                    .auth-tabs {
+                        display: flex;
+                        gap: 15px;
+                        margin-bottom: 30px;
+                        border-bottom: 2px solid #edf0f5;
+                        padding-bottom: 20px;
+                    }
+
+                    .auth-tab {
+                        flex: 1;
+                        padding: 16px;
+                        background: #f8f9fa;
+                        border: 2px solid transparent;
+                        border-radius: 8px;
+                        font-size: 14px;
+                        font-weight: 800;
+                        color: #888;
+                        cursor: pointer;
+                        letter-spacing: 1px;
+                        text-transform: uppercase;
+                        transition: all 0.3s ease;
+                    }
+
+                    .auth-tab:hover { background: #edf0f5; }
+
+                    .auth-tab.active {
+                        color: #fff;
+                        background: #1a2456;
+                        border-color: #1a2456;
+                        box-shadow: 0 4px 12px rgba(26, 36, 86, 0.2);
+                    }
+
+                    .two-col {
+                        display: grid;
+                        grid-template-columns: 1fr 1fr;
+                        gap: 20px;
+                    }
+
+                    .form-group { margin-bottom: 22px; text-align: left; }
+
+                    .form-group label {
+                        display: block;
+                        color: #1a2456;
+                        font-size: 12px;
+                        font-weight: 800;
+                        text-transform: uppercase;
+                        letter-spacing: 0.5px;
+                        margin-bottom: 8px;
+                    }
+
+                    .form-group input, .form-group select, .form-group textarea {
+                        width: 100%;
+                        padding: 15px 16px;
+                        background: #f8f9fa;
+                        border: 2px solid #edf0f5;
+                        border-radius: 8px;
+                        color: #333;
+                        font-size: 15px;
+                        outline: none;
+                        transition: all 0.3s ease;
+                        font-family: inherit;
+                    }
+
+                    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+                        border-color: #1a2456;
+                        background: #fff;
+                        box-shadow: 0 0 0 4px rgba(26, 36, 86, 0.1);
+                    }
+
+                    .phone-input-group {
+                        display: flex;
+                        align-items: stretch;
+                        width: 100%;
+                        background: #f8f9fa;
+                        border: 2px solid #edf0f5;
+                        border-radius: 8px;
+                        overflow: hidden;
+                        transition: all 0.3s ease;
+                    }
+                    .phone-input-group:focus-within {
+                        border-color: #1a2456;
+                        background: #ffffff;
+                        box-shadow: 0 0 0 4px rgba(26, 36, 86, 0.1);
+                    }
+
+                    .phone-input-group input,
+                    .phone-input-group select {
+                        border: none !important;
+                        background-color: transparent !important;
+                        box-shadow: none !important;
+                        outline: none !important;
+                        margin: 0 !important;
+                        height: 100% !important;
+                    }
+                    .phone-input-group input:focus,
+                    .phone-input-group select:focus {
+                        border: none !important;
+                        background-color: transparent !important;
+                        box-shadow: none !important;
+                        outline: none !important;
+                    }
+
+                    .phone-code-select {
+                        flex: 0 0 42% !important;
+                        width: 42% !important;
+                        border-right: 2px solid #edf0f5 !important;
+                        border-radius: 0 !important;
+                        font-weight: 600;
+                        text-overflow: ellipsis;
+                        padding: 15px 25px 15px 12px !important;
+                        color: #1a2456 !important;
+                        cursor: pointer;
+                        -webkit-appearance: none;
+                        -moz-appearance: none;
+                        appearance: none;
+                        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg fill='%231a2456' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3cpath d='M0 0h24v24H0z' fill='none'/%3e%3c/svg%3e") !important;
+                        background-repeat: no-repeat !important;
+                        background-position: right 5px center !important;
+                        background-size: 18px !important;
+                    }
+                    .phone-input-group:focus-within .phone-code-select {
+                        border-right-color: rgba(26, 36, 86, 0.2) !important;
+                    }
+
+                    .phone-number-input {
+                        flex: 1 1 auto !important;
+                        width: 58% !important;
+                        border-radius: 0 !important;
+                        padding: 15px 15px !important;
+                    }
+
+                    .btn-submit {
+                        width: 100%;
+                        padding: 18px;
+                        background: #1a2456;
+                        border: none;
+                        border-radius: 8px;
+                        color: #fff;
+                        font-size: 15px;
+                        font-weight: 900;
+                        letter-spacing: 1.5px;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                        text-transform: uppercase;
+                        box-shadow: 0 4px 15px rgba(26, 36, 86, 0.2);
+                        border-bottom: 4px solid #8b1a3a;
+                    }
+
+                    .btn-submit:hover { background: #0f1a3a; transform: translateY(-2px); }
+
+                    .btn-submit-checkout {
+                        background: #8b1a3a;
+                        border-bottom: 4px solid #1a2456;
+                    }
+                    .btn-submit-checkout:hover { background: #6a132b; }
+
+                    .success-box { text-align: center; padding: 20px 0; }
+
+                    .success-ring {
+                        width: 90px; height: 90px;
+                        border: 4px solid #28a745; border-radius: 50%;
+                        display: flex; align-items: center; justify-content: center;
+                        margin: 0 auto 24px; background: rgba(40, 167, 69, 0.05);
+                    }
+                    .success-ring span { font-size: 40px; color: #28a745; font-weight: 900; }
+
+                    .success-box h3 { color: #1a2456; font-size: 24px; font-weight: 900; margin-bottom: 12px; }
+                    .success-box p { color: #666; font-size: 15px; line-height: 1.6; margin-bottom: 15px; }
+
+                    .time-badge {
+                        display: inline-block; background: #1a2456; color: #fff; border-radius: 8px;
+                        padding: 12px 30px; font-size: 16px; font-weight: 800; box-shadow: 0 4px 12px rgba(26, 36, 86, 0.2);
+                    }
+
+                    .error-box {
+                        background: #fff0f2; border-left: 5px solid #8b1a3a; border-radius: 6px;
+                        padding: 16px 20px; color: #8b1a3a; font-size: 14px; font-weight: 600;
+                        margin-bottom: 25px; box-shadow: 0 2px 8px rgba(139, 26, 58, 0.05); text-align: left;
+                    }
+
+                    .s_gym_footer {
+                        margin-top: auto;
+                    }
+
+                    .footer-custom {
+                        width: 100%; background: #1a2456; border-top: 5px solid #8b1a3a;
+                        padding: 24px; text-align: center;
+                    }
+                    .footer-custom span {
+                        font-size: 12px; color: rgba(255,255,255,0.6); letter-spacing: 2px;
+                        font-weight: 600; text-transform: uppercase;
+                    }
+                </style>
+
+                <script type="text/javascript">
+                    <![CDATA[
+                    var T = {
+                        tr: {
+                            title: 'SPOR SALONU SISTEMI', sub: 'Lutfen giris yapmak veya kayit olmak icin asagidaki formu kullanin.',
+                            tabLogin: 'GIRIS YAP', tabRegister: 'KAYIT OL',
+                            name: 'AD', surname: 'SOYAD', number: 'OGRENCI NUMARASI', dept: 'BOLUM',
+                            namePh: '', surnamePh: '', numberPh: 'Orn: 250205904', deptPh: '',
+                            gender: 'CINSIYET', genderSel: 'Seciniz...', male: 'Erkek', female: 'Kadin',
+                            phone: 'TELEFON', blood: 'KAN GRUBU', phone2: 'IKINCI TELEFON (ACIL DURUM)',
+                            address: 'EV ADRESI', medical: 'SAGLIK DURUMU / HASTALIKLAR',
+                            medicalPh: 'Herhangi bir kronik hastalik, alerji veya engel durumunuz varsa lutfen belirtiniz...',
+                            loginSubmit: 'SALONA GIRIS YAP', regSubmit: 'KAYIT OL', checkoutSubmit: 'SALONDAN CIKIS YAP',
+                            profTitle: 'OGRENCI PROFIL BILGILERI', profName: 'Ad Soyad:', profNo: 'Ogrenci No:',
+                            profDept: 'Bolum:', profGender: 'Cinsiyet:', profBlood: 'Kan Grubu:',
+                            profPhone: 'Telefon:', profPhone2: 'Acil Durum Tel:', profAddr: 'Ev Adresi:', profMed: 'Saglik Durumu:'
+                        },
+                        en: {
+                            title: 'GYM PORTAL SYSTEM', sub: 'Please use the form below to check-in or register.',
+                            tabLogin: 'CHECK-IN', tabRegister: 'REGISTER',
+                            name: 'FIRST NAME', surname: 'LAST NAME', number: 'STUDENT NUMBER', dept: 'DEPARTMENT',
+                            namePh: '', surnamePh: '', numberPh: 'E.g. 250205904', deptPh: '',
+                            gender: 'GENDER', genderSel: 'Select...', male: 'Male', female: 'Female',
+                            phone: 'PHONE', blood: 'BLOOD TYPE', phone2: 'SECOND PHONE (EMERGENCY)',
+                            address: 'HOME ADDRESS', medical: 'MEDICAL CONDITIONS / ILLNESSES',
+                            medicalPh: 'Please specify if you have any chronic illnesses, allergies, or disabilities...',
+                            loginSubmit: 'ENTER THE GYM', regSubmit: 'REGISTER', checkoutSubmit: 'LEAVE THE GYM',
+                            profTitle: 'STUDENT PROFILE INFO', profName: 'Full Name:', profNo: 'Student Number:',
+                            profDept: 'Department:', profGender: 'Gender:', profBlood: 'Blood Type:',
+                            profPhone: 'Phone:', profPhone2: 'Emergency Phone:', profAddr: 'Home Address:', profMed: 'Medical Conditions:'
+                        }
+                    };
+
+                    function flagEmoji(iso) {
+                        return iso.toUpperCase().replace(/./g, function(ch) {
+                            return String.fromCodePoint(127397 + ch.charCodeAt(0));
+                        });
+                    }
+
+                    var countryCodes = [
+                        { c: "+90", iso: "TR", n: "Turkiye", l: 10 },
+                        { c: "+93", iso: "AF", n: "Afghanistan", l: 9 },
+                        { c: "+355", iso: "AL", n: "Albania", l: 9 },
+                        { c: "+213", iso: "DZ", n: "Algeria", l: 9 },
+                        { c: "+376", iso: "AD", n: "Andorra", l: 6 },
+                        { c: "+244", iso: "AO", n: "Angola", l: 9 },
+                        { c: "+54", iso: "AR", n: "Argentina", l: 10 },
+                        { c: "+374", iso: "AM", n: "Armenia", l: 8 },
+                        { c: "+61", iso: "AU", n: "Australia", l: 9 },
+                        { c: "+43", iso: "AT", n: "Austria", l: 10 },
+                        { c: "+994", iso: "AZ", n: "Azerbaijan", l: 9 },
+                        { c: "+973", iso: "BH", n: "Bahrain", l: 8 },
+                        { c: "+880", iso: "BD", n: "Bangladesh", l: 10 },
+                        { c: "+32", iso: "BE", n: "Belgium", l: 9 },
+                        { c: "+55", iso: "BR", n: "Brazil", l: 11 },
+                        { c: "+359", iso: "BG", n: "Bulgaria", l: 9 },
+                        { c: "+1", iso: "CA", n: "Canada", l: 10 },
+                        { c: "+56", iso: "CL", n: "Chile", l: 9 },
+                        { c: "+86", iso: "CN", n: "China", l: 11 },
+                        { c: "+57", iso: "CO", n: "Colombia", l: 10 },
+                        { c: "+506", iso: "CR", n: "Costa Rica", l: 10 },
+                        { c: "+385", iso: "HR", n: "Croatia", l: 9 },
+                        { c: "+53", iso: "CU", n: "Cuba", l: 8 },
+                        { c: "+357", iso: "CY", n: "Cyprus", l: 8 },
+                        { c: "+420", iso: "CZ", n: "Czech Rep", l: 9 },
+                        { c: "+45", iso: "DK", n: "Denmark", l: 8 },
+                        { c: "+20", iso: "EG", n: "Egypt", l: 10 },
+                        { c: "+372", iso: "EE", n: "Estonia", l: 8 },
+                        { c: "+358", iso: "FI", n: "Finland", l: 10 },
+                        { c: "+33", iso: "FR", n: "France", l: 9 },
+                        { c: "+995", iso: "GE", n: "Georgia", l: 9 },
+                        { c: "+49", iso: "DE", n: "Germany", l: 11 },
+                        { c: "+30", iso: "GR", n: "Greece", l: 10 },
+                        { c: "+852", iso: "HK", n: "Hong Kong", l: 8 },
+                        { c: "+36", iso: "HU", n: "Hungary", l: 9 },
+                        { c: "+354", iso: "IS", n: "Iceland", l: 7 },
+                        { c: "+91", iso: "IN", n: "India", l: 10 },
+                        { c: "+62", iso: "ID", n: "Indonesia", l: 11 },
+                        { c: "+98", iso: "IR", n: "Iran", l: 10 },
+                        { c: "+964", iso: "IQ", n: "Iraq", l: 10 },
+                        { c: "+353", iso: "IE", n: "Ireland", l: 9 },
+                        { c: "+972", iso: "IL", n: "Israel", l: 9 },
+                        { c: "+39", iso: "IT", n: "Italy", l: 10 },
+                        { c: "+81", iso: "JP", n: "Japan", l: 10 },
+                        { c: "+962", iso: "JO", n: "Jordan", l: 9 },
+                        { c: "+7", iso: "KZ", n: "Kazakhstan", l: 10 },
+                        { c: "+254", iso: "KE", n: "Kenya", l: 9 },
+                        { c: "+965", iso: "KW", n: "Kuwait", l: 8 },
+                        { c: "+961", iso: "LB", n: "Lebanon", l: 8 },
+                        { c: "+218", iso: "LY", n: "Libya", l: 9 },
+                        { c: "+60", iso: "MY", n: "Malaysia", l: 11 },
+                        { c: "+52", iso: "MX", n: "Mexico", l: 10 },
+                        { c: "+212", iso: "MA", n: "Morocco", l: 9 },
+                        { c: "+95", iso: "MM", n: "Myanmar", l: 9 },
+                        { c: "+31", iso: "NL", n: "Netherlands", l: 9 },
+                        { c: "+64", iso: "NZ", n: "New Zealand", l: 9 },
+                        { c: "+234", iso: "NG", n: "Nigeria", l: 10 },
+                        { c: "+47", iso: "NO", n: "Norway", l: 8 },
+                        { c: "+968", iso: "OM", n: "Oman", l: 8 },
+                        { c: "+92", iso: "PK", n: "Pakistan", l: 10 },
+                        { c: "+970", iso: "PS", n: "Palestine", l: 9 },
+                        { c: "+51", iso: "PE", n: "Peru", l: 9 },
+                        { c: "+63", iso: "PH", n: "Philippines", l: 10 },
+                        { c: "+48", iso: "PL", n: "Poland", l: 9 },
+                        { c: "+351", iso: "PT", n: "Portugal", l: 9 },
+                        { c: "+974", iso: "QA", n: "Qatar", l: 8 },
+                        { c: "+40", iso: "RO", n: "Romania", l: 9 },
+                        { c: "+7", iso: "RU", n: "Russia", l: 10 },
+                        { c: "+966", iso: "SA", n: "Saudi Arabia", l: 9 },
+                        { c: "+381", iso: "RS", n: "Serbia", l: 9 },
+                        { c: "+65", iso: "SG", n: "Singapore", l: 8 },
+                        { c: "+421", iso: "SK", n: "Slovakia", l: 9 },
+                        { c: "+27", iso: "ZA", n: "South Africa", l: 9 },
+                        { c: "+82", iso: "KR", n: "South Korea", l: 10 },
+                        { c: "+34", iso: "ES", n: "Spain", l: 9 },
+                        { c: "+94", iso: "LK", n: "Sri Lanka", l: 9 },
+                        { c: "+46", iso: "SE", n: "Sweden", l: 8 },
+                        { c: "+41", iso: "CH", n: "Switzerland", l: 9 },
+                        { c: "+886", iso: "TW", n: "Taiwan", l: 9 },
+                        { c: "+66", iso: "TH", n: "Thailand", l: 9 },
+                        { c: "+216", iso: "TN", n: "Tunisia", l: 8 },
+                        { c: "+993", iso: "TM", n: "Turkmenistan", l: 8 },
+                        { c: "+380", iso: "UA", n: "Ukraine", l: 9 },
+                        { c: "+971", iso: "AE", n: "United Arab Emirates", l: 9 },
+                        { c: "+44", iso: "GB", n: "United Kingdom", l: 10 },
+                        { c: "+1", iso: "US", n: "United States", l: 10 },
+                        { c: "+598", iso: "UY", n: "Uruguay", l: 8 },
+                        { c: "+998", iso: "UZ", n: "Uzbekistan", l: 9 },
+                        { c: "+58", iso: "VE", n: "Venezuela", l: 10 },
+                        { c: "+84", iso: "VN", n: "Vietnam", l: 9 },
+                        { c: "+967", iso: "YE", n: "Yemen", l: 9 },
+                        { c: "+260", iso: "ZM", n: "Zambia", l: 9 },
+                        { c: "+263", iso: "ZW", n: "Zimbabwe", l: 9 }
+                    ];
+
+                    function buildCountryOptions() {
+                        var s1 = document.getElementById('inp-phone-code');
+                        var s2 = document.getElementById('inp-phone2-code');
+                        if(!s1 && !s2) return;
+
+                        if (s1) s1.innerHTML = '';
+                        if (s2) s2.innerHTML = '';
+
+                        countryCodes.forEach(function(c) {
+                            var flag = flagEmoji(c.iso);
+                            var label = flag + " " + c.iso + " " + c.c;
+
+                            var opt = document.createElement('option');
+                            opt.value = c.c;
+                            opt.setAttribute('data-len', c.l);
+                            opt.setAttribute('data-iso', c.iso);
+                            opt.textContent = label;
+                            if (c.c === "+90" && c.iso === "TR") opt.selected = true;
+
+                            if (s1) s1.appendChild(opt.cloneNode(true));
+                            if (s2) s2.appendChild(opt.cloneNode(true));
+                        });
+                    }
+
+                    function attachPhoneLengthLogic(selectId, inputId) {
+                        var sel = document.getElementById(selectId);
+                        var inp = document.getElementById(inputId);
+                        if(!sel || !inp) return;
+
+                        var applyLogic = function() {
+                            var opt = sel.options[sel.selectedIndex];
+                            var len = parseInt(opt.getAttribute('data-len'), 10) || 10;
+                            inp.setAttribute('maxlength', len);
+
+                            var currentLang = localStorage.getItem('gym_lang') || 'tr';
+                            if (currentLang === 'tr') {
+                                inp.placeholder = len + " haneli numara";
+                            } else {
+                                inp.placeholder = len + " digits number";
+                            }
+
+                            if(inp.value.length > len) {
+                                inp.value = inp.value.substring(0, len);
+                            }
+                        };
+
+                        inp.addEventListener('paste', function(e) {
+                            e.preventDefault();
+                            var pasted = (e.clipboardData || window.clipboardData).getData('text') || '';
+                            pasted = pasted.replace(/[^0-9]/g, '');
+                            var opt = sel.options[sel.selectedIndex];
+                            var len = parseInt(opt.getAttribute('data-len'), 10) || 10;
+                            inp.value = pasted.substring(0, len);
+                        });
+
+                        inp.addEventListener('input', function() {
+                            var val = inp.value.replace(/[^0-9]/g, '');
+                            var opt = sel.options[sel.selectedIndex];
+                            var len = parseInt(opt.getAttribute('data-len'), 10) || 10;
+                            if (val.length > len) val = val.substring(0, len);
+                            if (inp.value !== val) inp.value = val;
+                        });
+
+                        sel.addEventListener('change', applyLogic);
+                        applyLogic();
+                        return applyLogic;
+                    }
+
+                    var phoneLogic1, phoneLogic2;
+
+                    document.addEventListener("DOMContentLoaded", function(event) {
+                        buildCountryOptions();
+                        phoneLogic1 = attachPhoneLengthLogic('inp-phone-code', 'inp-phone');
+                        phoneLogic2 = attachPhoneLengthLogic('inp-phone2-code', 'inp-phone2');
+
+                        var savedLang = localStorage.getItem('gym_lang') || 'tr';
+                        setLang(savedLang);
+                    });
+
+                    function setLang(lang) {
+                        localStorage.setItem('gym_lang', lang);
+                        var t = T[lang];
+                        var g = function(id) { return document.getElementById(id); };
+
+                        if(g('main-title')) g('main-title').textContent = t.title;
+                        if(g('main-sub')) g('main-sub').textContent = t.sub;
+                        if(g('tab-login')) g('tab-login').textContent = t.tabLogin;
+                        if(g('tab-register')) g('tab-register').textContent = t.tabRegister;
+
+                        if(g('lbl-name')) g('lbl-name').textContent = t.name;
+                        if(g('lbl-surname')) g('lbl-surname').textContent = t.surname;
+                        if(g('lbl-login-number')) g('lbl-login-number').textContent = t.number;
+                        if(g('lbl-reg-number')) g('lbl-reg-number').textContent = t.number;
+                        if(g('lbl-dept')) g('lbl-dept').textContent = t.dept;
+                        if(g('lbl-gender')) g('lbl-gender').textContent = t.gender;
+                        if(g('opt-gender-sel')) g('opt-gender-sel').textContent = t.genderSel;
+                        if(g('opt-male')) g('opt-male').textContent = t.male;
+                        if(g('opt-female')) g('opt-female').textContent = t.female;
+                        if(g('lbl-phone')) g('lbl-phone').textContent = t.phone;
+                        if(g('lbl-blood')) g('lbl-blood').textContent = t.blood;
+                        if(g('lbl-phone2')) g('lbl-phone2').textContent = t.phone2;
+                        if(g('lbl-address')) g('lbl-address').textContent = t.address;
+                        if(g('lbl-medical')) g('lbl-medical').textContent = t.medical;
+                        if(g('inp-medical')) g('inp-medical').placeholder = t.medicalPh;
+                        if(g('inp-login-number')) g('inp-login-number').placeholder = t.numberPh;
+                        if(g('inp-reg-number')) g('inp-reg-number').placeholder = t.numberPh;
+
+                        if(g('btn-login-submit')) g('btn-login-submit').textContent = t.loginSubmit;
+                        if(g('btn-reg-submit')) g('btn-reg-submit').textContent = t.regSubmit;
+                        if(g('btn-profile-checkout')) g('btn-profile-checkout').textContent = t.checkoutSubmit;
+
+                        if(g('lbl-prof-title')) g('lbl-prof-title').textContent = t.profTitle;
+                        if(g('lbl-prof-name')) g('lbl-prof-name').textContent = t.profName;
+                        if(g('lbl-prof-no')) g('lbl-prof-no').textContent = t.profNo;
+                        if(g('lbl-prof-dept')) g('lbl-prof-dept').textContent = t.profDept;
+                        if(g('lbl-prof-gender')) g('lbl-prof-gender').textContent = t.profGender;
+                        if(g('lbl-prof-blood')) g('lbl-prof-blood').textContent = t.profBlood;
+                        if(g('lbl-prof-phone')) g('lbl-prof-phone').textContent = t.profPhone;
+                        if(g('lbl-prof-phone2')) g('lbl-prof-phone2').textContent = t.profPhone2;
+                        if(g('lbl-prof-addr')) g('lbl-prof-addr').textContent = t.profAddr;
+                        if(g('lbl-prof-med')) g('lbl-prof-med').textContent = t.profMed;
+
+                        var genderValSpan = g('val-prof-gender');
+                        if(genderValSpan) {
+                            var rawGender = genderValSpan.getAttribute('data-gender');
+                            if(rawGender === 'male') genderValSpan.textContent = t.male;
+                            else if(rawGender === 'female') genderValSpan.textContent = t.female;
+                            else genderValSpan.textContent = '-';
+                        }
+
+                        if (phoneLogic1) phoneLogic1();
+                        if (phoneLogic2) phoneLogic2();
+
+                        var langInputs = document.getElementsByClassName('lang-input');
+                        for(var i=0; i<langInputs.length; i++) { langInputs[i].value = lang; }
+
+                        if(g('success-tr')) g('success-tr').style.display = lang === 'tr' ? 'block' : 'none';
+                        if(g('success-en')) g('success-en').style.display = lang === 'en' ? 'block' : 'none';
+                        if(g('reg-success-tr')) g('reg-success-tr').style.display = lang === 'tr' ? 'block' : 'none';
+                        if(g('reg-success-en')) g('reg-success-en').style.display = lang === 'en' ? 'block' : 'none';
+                        if(g('checkout-success-tr')) g('checkout-success-tr').style.display = lang === 'tr' ? 'block' : 'none';
+                        if(g('checkout-success-en')) g('checkout-success-en').style.display = lang === 'en' ? 'block' : 'none';
+
+                        if(g('btn-tr')) g('btn-tr').classList.toggle('active', lang === 'tr');
+                        if(g('btn-en')) g('btn-en').classList.toggle('active', lang === 'en');
+                    }
+
+                    function switchAuth(mode) {
+                        var g = function(id) { return document.getElementById(id); };
+                        var tabs = ['login', 'register'];
+                        tabs.forEach(function(tab) {
+                            if(g('form-' + tab)) g('form-' + tab).style.display = (mode === tab) ? 'block' : 'none';
+                            if(g('tab-' + tab)) {
+                                if (mode === tab) {
+                                    g('tab-' + tab).classList.add('active');
+                                } else {
+                                    g('tab-' + tab).classList.remove('active');
+                                }
+                            }
+                        });
+                    }
+
+                    function toggleProfileEdit() {
+                        var form = document.getElementById('profile-edit-form');
+                        var button = document.getElementById('btn-profile-edit');
+                        if (!form) return;
+
+                        var isHidden = form.style.display === 'none' || form.style.display === '';
+                        form.style.display = isHidden ? 'block' : 'none';
+                        if (button) button.textContent = isHidden ? 'Kapat' : 'Bilgileri Duzenle';
+                    }
+                    ]]>
+                </script>
+            </t>
+
+            <div id="wrap">
+                <div class="oe_structure oe_empty" id="gym_slot_top"/>
+
+                <section class="s_gym_navbar gym-font">
+                    <div class="navbar-custom">
+                        <div class="navbar-inner">
+                            <div class="logo-area">
+                                <img t-att-src="'/gym_management/static/src/img/ostim_logo.png'" alt="OSTiM Teknik Universitesi"/>
+                            </div>
+                            <div class="lang-switch">
+                                <button class="lang-btn active" id="btn-tr" onclick="setLang('tr')">TR</button>
+                                <span class="lang-sep">|</span>
+                                <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="s_gym_header gym-font">
+                    <div class="page-header-custom">
+                        <h2 id="main-title">SPOR SALONU SISTEMI</h2>
+                        <p id="main-sub">Lutfen giris yapmak veya kayit olmak icin asagidaki formu kullanin.</p>
+                    </div>
+                </section>
+
+                <section class="s_gym_form form-section-bg gym-font">
+                    <div class="container">
+                        <div class="card-custom">
+
+                            <t t-if="success">
+                                <div class="success-box">
+                                    <div class="success-ring"><span>&#10003;</span></div>
+                                    <div id="success-tr">
+                                        <h3>Giris Basarili!</h3>
+                                        <p>Hos geldiniz, turnikeden gecebilirsiniz.<br/>Iyi antrenmanlar dileriz.</p>
+                                    </div>
+                                    <div id="success-en" style="display:none;">
+                                        <h3>Entry Successful!</h3>
+                                        <p>Welcome, you may pass the turnstile.<br/>Have a great workout.</p>
+                                    </div>
+
+                                    <div style="border: 2px solid #1a2456; border-radius: 10px; padding: 25px; margin-top: 25px; background-color: #f8f9fa; text-align: left;">
+                                        <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; border-bottom: 2px solid #8b1a3a; padding-bottom: 8px; margin-bottom: 15px;">
+                                            <h4 id="lbl-prof-title" style="color: #1a2456; font-weight: 900; margin: 0; text-transform: uppercase; font-size: 15px;">Ogrenci Profil Bilgileri</h4>
+                                            <button type="button" id="btn-profile-edit" onclick="toggleProfileEdit()" title="Bilgileri duzenle" style="border: 1px solid #1a2456; background: #ffffff; color: #1a2456; border-radius: 6px; padding: 7px 11px; font-weight: 800; cursor: pointer;">
+                                                Bilgileri Duzenle
+                                            </button>
+                                        </div>
+                                        <t t-if="profile_update_success">
+                                            <div class="success-box" style="padding: 12px; margin-bottom: 15px; background: #ecfdf5; border: 1px solid #16a34a; color: #166534; text-align: center;">
+                                                Bilgileriniz guncellendi.
+                                            </div>
+                                        </t>
+                                        <div class="two-col" style="font-size: 14px; line-height: 1.6; color: #333; gap: 15px;">
+                                            <div>
+                                                <p style="margin-bottom: 8px;"><strong id="lbl-prof-name">Ad Soyad:</strong> <span t-esc="visit.full_name"/></p>
+                                                <p style="margin-bottom: 8px;"><strong id="lbl-prof-no">Ogrenci No:</strong> <span t-esc="visit.student_number"/></p>
+                                                <p style="margin-bottom: 8px;"><strong id="lbl-prof-dept">Bolum:</strong> <span t-esc="visit.department"/></p>
+                                                <p style="margin-bottom: 8px;"><strong id="lbl-prof-gender">Cinsiyet:</strong>
+                                                    <span id="val-prof-gender" t-att-data-gender="visit.gender">
+                                                        <t t-if="visit.gender == 'male'">Erkek</t>
+                                                        <t t-elif="visit.gender == 'female'">Kadin</t>
+                                                        <t t-else="">-</t>
+                                                    </span>
+                                                </p>
+                                                <p style="margin-bottom: 0;"><strong id="lbl-prof-blood">Kan Grubu:</strong> <span t-esc="visit.blood_type or '-'" style="color: #8b1a3a; font-weight: bold;"/></p>
+                                            </div>
+                                            <div>
+                                                <p style="margin-bottom: 8px;"><strong id="lbl-prof-phone">Telefon:</strong> <span t-esc="visit.phone or '-'"/></p>
+                                                <p style="margin-bottom: 8px;"><strong id="lbl-prof-phone2">Acil Durum Tel:</strong> <span t-esc="visit.phone2 or '-'"/></p>
+                                                <p style="margin-bottom: 8px;"><strong id="lbl-prof-addr">Ev Adresi:</strong> <span t-esc="visit.address or '-'"/></p>
+                                                <p style="margin-bottom: 0;"><strong id="lbl-prof-med">Saglik Durumu:</strong> <span t-esc="visit.medical_conditions or '-'"/></p>
+                                            </div>
+                                        </div>
+                                        <form id="profile-edit-form" method="POST" action="/gym/profile/update" style="display: none; margin-top: 18px; border-top: 1px solid #ddd; padding-top: 18px;">
+                                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                            <input type="hidden" name="visit_id" t-att-value="visit.id"/>
+                                            <input type="hidden" name="student_number" t-att-value="visit.student_number"/>
+
+                                            <div class="two-col" style="gap: 15px;">
+                                                <div class="form-group">
+                                                    <label>TELEFON</label>
+                                                    <input type="text" name="phone" t-att-value="visit.phone or ''" oninput="this.value = this.value.replace(/[^0-9+ ]/g, '')"/>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>ACIL DURUM TEL</label>
+                                                    <input type="text" name="phone2" t-att-value="visit.phone2 or ''" oninput="this.value = this.value.replace(/[^0-9+ ]/g, '')"/>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>EV ADRESI</label>
+                                                <textarea name="address" rows="2"><t t-esc="visit.address or ''"/></textarea>
+                                            </div>
+
+                                            <div class="form-group" style="margin-bottom: 18px;">
+                                                <label>SAGLIK DURUMU</label>
+                                                <textarea name="medical_conditions" rows="2"><t t-esc="visit.medical_conditions or ''"/></textarea>
+                                            </div>
+
+                                            <button type="submit" class="btn-submit" style="font-size: 14px; padding: 12px;">BILGILERI GUNCELLE</button>
+                                        </form>
+                                        <div style="text-align: center; margin-top: 25px; border-top: 1px solid #ddd; padding-top: 20px;">
+                                            <span id="time-tr" class="time-badge"><t t-esc="visit.allowed_minutes"/>:00</span>
+                                            <span id="time-en" class="time-badge" style="display:none;"><t t-esc="visit.allowed_minutes"/>:00</span>
+                                        </div>
+                                    </div>
+
+                                    <form method="POST" action="/gym/checkout" style="margin-top: 25px;">
+                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                        <input type="hidden" name="student_number" t-att-value="visit.student_number"/>
+                                        <button type="submit" class="btn-submit btn-submit-checkout" id="btn-profile-checkout">SALONDAN CIKIS YAP</button>
+                                    </form>
+                                </div>
+                            </t>
+
+                            <t t-elif="register_success">
+                                <div class="success-box">
+                                    <div class="success-ring" style="border-color:#1a2456;"><span style="color:#1a2456;">&#10003;</span></div>
+                                    <div id="reg-success-tr">
+                                        <h3>Kayit Tamamlandi!</h3>
+                                        <p>Profiliniz basariyla olusturuldu.<br/>Artik ogrenci numaranizla giris yapabilirsiniz.</p>
+                                        <button onclick="window.location.href='/gym/register'" class="btn-submit" style="margin-top:20px;">GIRIS YAP EKRANINA DON</button>
+                                    </div>
+                                    <div id="reg-success-en" style="display:none;">
+                                        <h3>Registration Complete!</h3>
+                                        <p>Your profile has been created successfully.<br/>You can now log in with your student number.</p>
+                                        <button onclick="window.location.href='/gym/register'" class="btn-submit" style="margin-top:20px;">RETURN TO LOGIN</button>
+                                    </div>
+                                </div>
+                            </t>
+
+                            <t t-elif="checkout_success">
+                                <div class="success-box">
+                                    <div class="success-ring" style="border-color:#8b1a3a;"><span style="color:#8b1a3a;">&#10003;</span></div>
+                                    <div id="checkout-success-tr">
+                                        <h3>Cikis Basarili!</h3>
+                                        <p>Sistemden cikisiniz basariyla yapildi.<br/>Iyi gunler dileriz, tekrar bekleriz!</p>
+                                        <button onclick="window.location.href='/gym/register'" class="btn-submit btn-submit-checkout" style="margin-top:20px;">ANA SAYFAYA DON</button>
+                                    </div>
+                                    <div id="checkout-success-en" style="display:none;">
+                                        <h3>Check-out Successful!</h3>
+                                        <p>You have successfully checked out of the system.<br/>Have a great day, see you next time!</p>
+                                        <button onclick="window.location.href='/gym/register'" class="btn-submit btn-submit-checkout" style="margin-top:20px;">RETURN TO HOME</button>
+                                    </div>
+                                </div>
+                            </t>
+
+                            <t t-else="">
+                                <div class="auth-tabs">
+                                    <button type="button" class="auth-tab active" id="tab-login" onclick="switchAuth('login')">GIRIS YAP</button>
+                                    <button type="button" class="auth-tab" id="tab-register" onclick="switchAuth('register')">KAYIT OL</button>
+                                </div>
+
+                                <t t-if="error">
+                                    <div class="error-box"><strong>Uyari:</strong> <t t-esc="error"/></div>
+                                </t>
+
+                                <t t-if="request.env['ir.config_parameter'].sudo().get_param('gym_management.is_gym_open') == 'False'">
+                                    <div class="error-box" style="background: #fff0f0; border-color: #dc2626; color: #dc2626; font-size: 16px; text-align: center; padding: 25px;">
+                                        <strong>Spor Salonu Kapali!</strong><br/>
+                                        Su an spor salonu hizmet verememektedir.
+                                    </div>
+                                </t>
+
+                                <form id="form-login" method="POST" action="/gym/login">
+                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                    <input type="hidden" name="lang" class="lang-input" value="tr"/>
+
+                                    <div class="form-group" style="margin-bottom: 30px;">
+                                        <label id="lbl-login-number">OGRENCI NUMARASI</label>
+                                        <input type="text" name="student_number" id="inp-login-number" placeholder="Orn: 250205904" required="1" maxlength="9" oninput="this.value = this.value.replace(/[^0-9]/g, '')"/>
+                                    </div>
+
+                                    <button type="submit" class="btn-submit" id="btn-login-submit">SALONA GIRIS YAP</button>
+                                </form>
+
+                                <form id="form-register" method="POST" action="/gym/register" style="display: none;">
+                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                    <input type="hidden" name="lang" class="lang-input" value="tr"/>
+
+                                    <div class="two-col">
+                                        <div class="form-group">
+                                            <label id="lbl-name">AD</label>
+                                            <input type="text" name="student_name" id="inp-name" required="1" oninput="this.value = this.value.replace(/[0-9]/g, '')"/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label id="lbl-surname">SOYAD</label>
+                                            <input type="text" name="student_surname" id="inp-surname" required="1" oninput="this.value = this.value.replace(/[0-9]/g, '')"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="two-col">
+                                        <div class="form-group">
+                                            <label id="lbl-reg-number">OGRENCI NUMARASI</label>
+                                            <input type="text" name="student_number" id="inp-reg-number" required="1" maxlength="9" oninput="this.value = this.value.replace(/[^0-9]/g, '')"/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label id="lbl-dept">BOLUM</label>
+                                            <input type="text" name="department" id="inp-dept" required="1"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="two-col">
+                                        <div class="form-group">
+                                            <label id="lbl-gender">CINSIYET</label>
+                                            <select name="gender" id="inp-gender" required="1">
+                                                <option value="" id="opt-gender-sel">Seciniz...</option>
+                                                <option value="male" id="opt-male">Erkek</option>
+                                                <option value="female" id="opt-female">Kadin</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label id="lbl-blood">KAN GRUBU</label>
+                                            <select name="blood_type" id="inp-blood">
+                                                <option value="">Seciniz</option>
+                                                <option value="A Rh+">A Rh+</option><option value="A Rh-">A Rh-</option>
+                                                <option value="B Rh+">B Rh+</option><option value="B Rh-">B Rh-</option>
+                                                <option value="AB Rh+">AB Rh+</option><option value="AB Rh-">AB Rh-</option>
+                                                <option value="0 Rh+">0 Rh+</option><option value="0 Rh-">0 Rh-</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="two-col">
+                                        <div class="form-group">
+                                            <label id="lbl-phone">TELEFON</label>
+                                            <div class="phone-input-group">
+                                                <select name="phone_code" id="inp-phone-code" class="phone-code-select"></select>
+                                                <input type="text" name="phone" id="inp-phone" class="phone-number-input" oninput="this.value = this.value.replace(/[^0-9]/g, '')"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label id="lbl-phone2">IKINCI TELEFON (ACIL DURUM)</label>
+                                            <div class="phone-input-group">
+                                                <select name="phone2_code" id="inp-phone2-code" class="phone-code-select"></select>
+                                                <input type="text" name="phone2" id="inp-phone2" class="phone-number-input" oninput="this.value = this.value.replace(/[^0-9]/g, '')"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label id="lbl-address">EV ADRESI</label>
+                                        <textarea name="address" id="inp-address" rows="2"></textarea>
+                                    </div>
+
+                                    <div class="form-group" style="margin-bottom: 30px;">
+                                        <label id="lbl-medical">SAGLIK DURUMU / HASTALIKLAR</label>
+                                        <textarea name="medical_conditions" id="inp-medical" rows="2" placeholder="Herhangi bir kronik hastalik, alerji veya engel durumunuz varsa lutfen belirtiniz..."></textarea>
+                                    </div>
+
+                                    <button type="submit" class="btn-submit" id="btn-reg-submit">KAYIT OL</button>
+                                </form>
+                            </t>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="oe_structure oe_empty" id="gym_slot_bottom"/>
+
+            </div>
+        </t>
+    </template>
+
+    <!-- ==================================================================== -->
+    <!-- TV CANLI YAYIN EKRANI (KURUMSAL LISTE / TABLO VE DUYURULAR)          -->
+    <!-- ==================================================================== -->
+    <template id="gym_tv_display_page" name="Spor Salonu TV Ekrani">
+        <t t-call="website.layout">
+            <t t-set="no_header" t-value="True"/>
+            <t t-set="no_footer" t-value="True"/>
+            <t t-set="head">
+                <meta http-equiv="refresh" content="15"/>
+                <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&amp;display=swap"/>
+                <style>
+                    html, body {
+                        background-color: #f4f6f9 !important;
+                        font-family: 'Inter', sans-serif;
+                        margin: 0; padding: 0;
+                        height: 100vh; width: 100vw;
+                        overflow-x: hidden;
+                    }
+
+                    .tv-header {
+                        background-color: #1a2456;
+                        padding: 20px 40px;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        border-bottom: 6px solid #8b1a3a;
+                        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+                        color: white;
+                    }
+
+                    .tv-header-left {
+                        display: flex;
+                        align-items: center;
+                        gap: 25px;
+                    }
+
+                    .tv-header img {
+                        height: 75px;
+                        background: #ffffff;
+                        padding: 8px;
+                        border-radius: 8px;
+                        object-fit: contain;
+                    }
+
+                    .tv-header h1 {
+                        margin: 0;
+                        font-size: 30px;
+                        font-weight: 900;
+                        letter-spacing: 1px;
+                        text-transform: uppercase;
+                    }
+
+                    .tv-header h3 {
+                        margin: 5px 0 0 0;
+                        font-size: 18px;
+                        font-weight: 400;
+                        color: #cbd5e1;
+                    }
+
+                    #live-clock {
+                        font-size: 42px;
+                        font-weight: 900;
+                        margin: 0;
+                    }
+
+                    .tv-list-container {
+                        width: 95%;
+                        margin: 30px auto 40px auto;
+                        background: #ffffff;
+                        border-radius: 12px;
+                        box-shadow: 0 10px 30px rgba(26, 36, 86, 0.08);
+                        overflow: hidden;
+                        border: 2px solid #edf0f5;
+                    }
+
+                    .tv-table {
+                        width: 100%;
+                        border-collapse: collapse;
+                    }
+
+                    .tv-table th {
+                        background-color: #1a2456;
+                        color: #ffffff;
+                        padding: 22px 30px;
+                        text-align: left;
+                        font-size: 18px;
+                        font-weight: 800;
+                        text-transform: uppercase;
+                        letter-spacing: 1px;
+                        border-bottom: 4px solid #8b1a3a;
+                    }
+
+                    .tv-table td {
+                        padding: 25px 30px;
+                        border-bottom: 1px solid #edf0f5;
+                        font-size: 24px;
+                        font-weight: 800;
+                        color: #1a2456;
+                        vertical-align: middle;
+                    }
+
+                    .tv-table tr:last-child td {
+                        border-bottom: none;
+                    }
+
+                    .tv-table tr:nth-child(even) {
+                        background-color: #f8f9fa;
+                    }
+
+                    .dept-text {
+                        font-size: 20px;
+                        color: #64748b;
+                        font-weight: 600;
+                    }
+
+                    .status-badge {
+                        padding: 12px 24px;
+                        border-radius: 8px;
+                        font-size: 18px;
+                        font-weight: 900;
+                        color: #ffffff;
+                        display: inline-block;
+                        text-align: center;
+                        min-width: 160px;
+                        letter-spacing: 0.5px;
+                        text-transform: uppercase;
+                    }
+
+                    .bg-green { background-color: #16a34a; box-shadow: 0 4px 12px rgba(22, 163, 74, 0.2); }
+                    .bg-yellow { background-color: #eab308; color: #1a2456; box-shadow: 0 4px 12px rgba(234, 179, 8, 0.2); }
+                    .bg-red { background-color: #dc2626; box-shadow: 0 4px 12px rgba(220, 38, 38, 0.2); }
+
+                    /* ========================================================= */
+                    /* Sabit Duyuru Panosu CSS                                  */
+                    /* ========================================================= */
+                    .announcement-container {
+                        width: 95%;
+                        margin: 30px auto 0 auto;
+                        background: #ffffff;
+                        border-radius: 12px;
+                        box-shadow: 0 10px 30px rgba(26, 36, 86, 0.08);
+                        border-left: 8px solid #8b1a3a;
+                        display: flex;
+                        align-items: center;
+                        padding: 20px 30px;
+                    }
+                    .announcement-title {
+                        font-size: 22px;
+                        font-weight: 900;
+                        color: #1a2456;
+                        margin-right: 30px;
+                        padding-right: 30px;
+                        border-right: 2px solid #edf0f5;
+                        white-space: nowrap;
+                        display: flex;
+                        align-items: center;
+                        text-transform: uppercase;
+                        letter-spacing: 1px;
+                    }
+                    .announcement-icon {
+                        color: #eab308;
+                        font-size: 28px;
+                        margin-right: 12px;
+                    }
+                    .announcement-items {
+                        display: flex;
+                        flex-wrap: wrap;
+                        gap: 15px;
+                    }
+                    .announcement-item {
+                        background: #f8f9fa;
+                        padding: 12px 20px;
+                        border-radius: 8px;
+                        border: 1px solid #edf0f5;
+                        font-size: 18px;
+                        font-weight: 700;
+                        color: #334155;
+                    }
+                </style>
+            </t>
+
+            <div id="wrap">
+                <div class="tv-header">
+                    <div class="tv-header-left">
+                        <img src="/gym_management/static/src/img/ostim_logo.png" alt="OSTiM Teknik Universitesi"/>
+                        <div>
+                            <h1>OSTIM TEKNIK UNIVERSITESI</h1>
+                            <h3>Spor Merkezi Canli Takip Ekrani</h3>
+                        </div>
+                    </div>
+                    <h1 id="live-clock"></h1>
+                </div>
+
+                <!-- ======================================================= -->
+                <!-- Sabit Duyuru Panosu HTML Blogu                          -->
+                <!-- ======================================================= -->
+                <t t-if="announcements">
+                    <div class="announcement-container">
+                        <div class="announcement-title">
+                            <span class="announcement-icon">!</span> DUYURULAR
+                        </div>
+                        <div class="announcement-items">
+                            <t t-foreach="announcements" t-as="a">
+                                <div class="announcement-item">
+                                    <t t-esc="a.name"/>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                </t>
+
+                <div class="tv-list-container">
+                    <table class="tv-table">
+                        <thead>
+                            <tr>
+                                <th>Ogrenci Adi Soyadi</th>
+                                <th>Bolumu</th>
+                                <th>Giris Saati</th>
+                                <th>Kalan Sure</th>
+                                <th>Durum</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-if="len(visits) == 0">
+                                <tr>
+                                    <td colspan="5" style="text-align: center; padding: 60px; color: #64748b;">
+                                        Su anda salonda aktif bir ogrenci bulunmamaktadir.
+                                    </td>
+                                </tr>
+                            </t>
+
+                            <t t-foreach="visits" t-as="v">
+                                <tr>
+                                    <td><t t-esc="v.full_name"/></td>
+                                    <td class="dept-text"><t t-esc="v.department"/></td>
+                                    <td><span t-field="v.check_in_time" t-options='{"widget": "datetime", "format": "HH:mm"}'/></td>
+
+                                    <td class="countdown-timer" t-att-data-checkin="v.check_in_time" t-att-data-allowed="v.allowed_minutes">
+                                        <t t-if="v.remaining_minutes &gt; 0">
+                                            <t t-esc="v.remaining_minutes"/>:00
+                                        </t>
+                                        <t t-else="">
+                                            <span style="color: #dc2626;">00:00</span>
+                                        </t>
+                                    </td>
+
+                                    <td>
+                                        <t t-if="v.color_state == 'green'">
+                                            <span class="status-badge bg-green">Devam Ediyor</span>
+                                        </t>
+                                        <t t-elif="v.color_state == 'yellow'">
+                                            <span class="status-badge bg-yellow">Son <t t-esc="v.remaining_minutes"/> Dk</span>
+                                        </t>
+                                        <t t-else="">
+                                            <span class="status-badge bg-red">Sure Doldu</span>
+                                        </t>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <script type="text/javascript">
+                <![CDATA[
+                function updateTVTimers() {
+                    var clock = document.getElementById('live-clock');
+                    if (clock) clock.textContent = new Date().toLocaleTimeString('tr-TR');
+
+                    var timers = document.querySelectorAll('.countdown-timer');
+                    var now = new Date();
+                    timers.forEach(function(el) {
+                        var checkin = el.getAttribute('data-checkin');
+                        var allowed = parseInt(el.getAttribute('data-allowed'), 10);
+                        if(checkin && !isNaN(allowed)) {
+                            var isoStr = checkin.replace(' ', 'T');
+                            if (isoStr.indexOf('Z') === -1) isoStr += 'Z';
+
+                            var checkinDate = new Date(isoStr);
+                            var expireDate = new Date(checkinDate.getTime() + allowed * 60000);
+                            var diffMs = expireDate - now;
+
+                            if (diffMs <= 0) {
+                                el.innerHTML = '<span style="color: #dc2626; font-weight: 800;">00:00</span>';
+                            } else {
+                                var totalSecs = Math.floor(diffMs / 1000);
+                                var m = Math.floor(totalSecs / 60);
+                                var s = totalSecs % 60;
+                                m = m < 10 ? '0' + m : m;
+                                s = s < 10 ? '0' + s : s;
+                                el.innerHTML = '<span style="font-variant-numeric: tabular-nums;">' + m + ':' + s + '</span>';
+                            }
+                        }
+                    });
+                }
+
+                setInterval(updateTVTimers, 1000);
+                updateTVTimers();
+                ]]>
+            </script>
+        </t>
+    </template>
+</odoo>

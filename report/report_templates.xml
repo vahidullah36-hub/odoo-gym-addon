@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="gym_external_layout_custom">
+        <div class="header" style="border-bottom: 2px solid #8b1a3a; padding-bottom: 15px; margin-bottom: 20px;">
+            <div class="row align-items-center">
+                <div class="col-4">
+                    <img src="/gym_management/static/src/img/ostim_logo.png" style="max-height: 70px;" alt="OSTİM Logo"/>
+                </div>
+                <div class="col-8 text-right">
+                    <h4 style="color: #1a2456; font-weight: bold; margin-bottom: 0;">OSTİM TEKNİK ÜNİVERSİTESİ</h4>
+                    <p style="color: #8b1a3a; font-size: 13px; font-weight: 600; margin-top: 5px;">Spor Merkezi Otomasyon Sistemi</p>
+                </div>
+            </div>
+        </div>
+        <div class="article">
+            <t t-raw="0"/>
+        </div>
+        <div class="footer" style="border-top: 1px solid #ccc; padding-top: 10px; font-size: 11px; color: #666;">
+            <div class="row">
+                <div class="col-6">
+                    <span>OSTİM Teknik Üniversitesi • Spor Merkezi Otomasyonu</span>
+                </div>
+                <div class="col-6 text-right">
+                    Sayfa <span class="page"/> / <span class="topage"/>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="report_gym_daily_template">
+        <t t-call="web.html_container">
+            <t t-call="gym_management.gym_external_layout_custom">
+                <div class="page" style="font-family: 'Helvetica', 'Arial', sans-serif;">
+                    <h2 class="text-center" style="color: #1a2456; font-weight: 900; margin-bottom: 10px; text-transform: uppercase;">GÜN SONU SPOR SALONU GİRİŞ RAPORU</h2>
+                    <p class="text-center text-muted" style="font-size: 13px; margin-bottom: 25px;">
+                        <strong>Rapor Oluşturma Zamanı:</strong> <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M')"/>
+                    </p>
+                    
+                    <div class="row text-center" style="margin-bottom: 30px;">
+                        <div class="col-4">
+                            <div style="border: 2px solid #1a2456; padding: 15px; border-radius: 8px; background-color: #f8f9fa;">
+                                <h6 style="color: #1a2456; font-weight: bold; font-size: 12px;">TOPLAM GİRİŞ SAYISI</h6>
+                                <h2 style="margin: 10px 0 0 0; font-weight: 900; color: #1a2456;"><t t-esc="total_count"/></h2>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div style="border: 2px solid #e8820c; padding: 15px; border-radius: 8px; background-color: #f8f9fa;">
+                                <h6 style="color: #e8820c; font-weight: bold; font-size: 12px;">ŞU AN SALONDA OLANLAR</h6>
+                                <h2 style="margin: 10px 0 0 0; font-weight: 900; color: #e8820c;"><t t-esc="active_count"/></h2>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div style="border: 2px solid #8b1a3a; padding: 15px; border-radius: 8px; background-color: #f8f9fa;">
+                                <h6 style="color: #8b1a3a; font-weight: bold; font-size: 12px;">ÇIKIŞ YAPANLAR</h6>
+                                <h2 style="margin: 10px 0 0 0; font-weight: 900; color: #8b1a3a;"><t t-esc="checked_out_count"/></h2>
+                            </div>
+                        </div>
+                    </div>
+
+                    <table class="table table-bordered table-sm" style="border: 1px solid #1a2456; width: 100%; font-size: 13px;">
+                        <thead style="background-color: #1a2456;">
+                            <tr class="text-center">
+                                <th style="padding: 10px; vertical-align: middle; color: #ffffff !important;">Referans</th>
+                                <th style="padding: 10px; vertical-align: middle; color: #ffffff !important;">Öğrenci No</th>
+                                <th style="padding: 10px; vertical-align: middle; color: #ffffff !important;">İsim Soyisim</th>
+                                <th style="padding: 10px; vertical-align: middle; color: #ffffff !important;">Cinsiyet</th>
+                                <th style="padding: 10px; vertical-align: middle; color: #ffffff !important;">Bölüm</th>
+                                <th style="padding: 10px; vertical-align: middle; color: #ffffff !important;">Giriş</th>
+                                <th style="padding: 10px; vertical-align: middle; color: #ffffff !important;">Çıkış</th>
+                                <th style="padding: 10px; vertical-align: middle; color: #ffffff !important;">Süre (Dk)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="docs" t-as="doc">
+                                <tr class="text-center">
+                                    <td style="padding: 8px; vertical-align: middle;"><t t-esc="doc.name"/></td>
+                                    <td style="padding: 8px; vertical-align: middle;"><t t-esc="doc.student_number"/></td>
+                                    <td style="padding: 8px; vertical-align: middle; font-weight: bold; text-align: left;"><t t-esc="doc.full_name"/></td>
+                                    <td style="padding: 8px; vertical-align: middle;"><span t-field="doc.gender"/></td>
+                                    <td style="padding: 8px; vertical-align: middle; text-align: left;"><t t-esc="doc.department"/></td>
+                                    <td style="padding: 8px; vertical-align: middle;"><span t-field="doc.check_in_time" t-options='{"widget": "datetime", "format": "HH:mm"}'/></td>
+                                    <td style="padding: 8px; vertical-align: middle;"><span t-if="doc.check_out_time" t-field="doc.check_out_time" t-options='{"widget": "datetime", "format": "HH:mm"}'/><span t-else="">-</span></td>
+                                    <td style="padding: 8px; vertical-align: middle;"><t t-esc="doc.total_minutes if doc.state == 'checked_out' else doc.elapsed_minutes"/></td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_gym_visit_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="gym_management.gym_external_layout_custom">
+                    <div class="page" style="font-family: 'Helvetica', 'Arial', sans-serif;">
+                        <h2 class="text-center" style="color: #1a2456; font-weight: 900; margin-bottom: 25px; text-transform: uppercase;">ÖĞRENCİ ZİYARET GEÇMİŞİ RAPORU</h2>
+                        
+                        <div style="border: 1px solid #1a2456; border-radius: 8px; padding: 18px; margin-bottom: 30px; background-color: #f8f9fa;">
+                            <div class="row" style="font-size: 14px; color: #333;">
+                                <div class="col-6">
+                                    <p style="margin-bottom: 10px;"><strong>Ad Soyad:</strong> <span t-field="doc.full_name" style="color:#1a2456; font-weight:bold;"/></p>
+                                    <p style="margin-bottom: 10px;"><strong>Öğrenci No:</strong> <span t-field="doc.student_number"/></p>
+                                    <p style="margin-bottom: 0;"><strong>Cinsiyet:</strong> <span t-field="doc.gender"/></p>
+                                </div>
+                                <div class="col-6">
+                                    <p style="margin-bottom: 10px;"><strong>Bölüm:</strong> <span t-field="doc.department"/></p>
+                                    <p style="margin-bottom: 0;"><strong>Kan Grubu:</strong> <span t-esc="doc.blood_type or '-'" style="color:#8b1a3a; font-weight:bold;"/></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h4 style="color: #8b1a3a; font-weight: bold; border-bottom: 2px solid #8b1a3a; padding-bottom: 6px; margin-bottom: 15px; text-transform: uppercase; font-size: 14px;">TÜM GEÇMİŞ ZİYARET KAYITLARI</h4>
+
+                        <t t-set="all_visits" t-value="doc.env['gym.visit'].search([('student_number', '=', doc.student_number)], order='check_in_time desc')"/>
+
+                        <table class="table table-bordered table-sm" style="border: 1px solid #1a2456; width: 100%; font-size: 13px;">
+                            <thead style="background-color: #1a2456;">
+                                <tr class="text-center">
+                                    <th style="padding: 10px; color: #ffffff !important;">Referans</th>
+                                    <th style="padding: 10px; color: #ffffff !important;">Giriş Tarihi &amp; Saati</th>
+                                    <th style="padding: 10px; color: #ffffff !important;">Çıkış Tarihi &amp; Saati</th>
+                                    <th style="padding: 10px; color: #ffffff !important;">Süre (Dk)</th>
+                                    <th style="padding: 10px; color: #ffffff !important;">Durum</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="all_visits" t-as="visit">
+                                    <tr class="text-center" t-att-style="'background-color: #f1f3f9; font-weight: bold;' if visit.id == doc.id else ''">
+                                        <td style="padding: 8px; vertical-align: middle;"><t t-esc="visit.name"/></td>
+                                        <td style="padding: 8px; vertical-align: middle;">
+                                            <span t-field="visit.check_in_time" t-options='{"widget": "datetime", "format": "yyyy-MM-dd HH:mm"}'/>
+                                        </td>
+                                        <td style="padding: 8px; vertical-align: middle;">
+                                            <span t-if="visit.check_out_time" t-field="visit.check_out_time" t-options='{"widget": "datetime", "format": "yyyy-MM-dd HH:mm"}'/>
+                                            <span t-else="" style="color: #e8820c; font-style: italic;">Aktif Seans</span>
+                                        </td>
+                                        <td style="padding: 8px; vertical-align: middle;">
+                                            <t t-esc="visit.total_minutes if visit.state == 'checked_out' else visit.elapsed_minutes"/>
+                                        </td>
+                                        <td style="padding: 8px; vertical-align: middle;">
+                                            <span t-if="visit.state == 'active'" style="color: #28a745;">İçeride</span>
+                                            <span t-elif="visit.state == 'expired'" style="color: #dc3545;">Süresi Doldu</span>
+                                            <span t-else="" class="text-muted">Çıkış Yapıldı</span>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+
+                        <t t-if="doc.medical_conditions">
+                            <div style="background-color: #fff0f2; border-left: 5px solid #8b1a3a; padding: 15px; margin-top: 25px; border-radius: 4px; font-size: 13px;">
+                                <strong style="color: #8b1a3a;">Sağlık Durumu / Kritik Notlar:</strong><br/>
+                                <span t-field="doc.medical_conditions"/>
+                            </div>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_gym_qr_template">
+        <t t-call="web.html_container">
+            <t t-call="gym_management.gym_external_layout_custom">
+                <div class="page text-center">
+                    <h2 style="color: #1a2456;">Spor Salonu Giriş QR Kodu</h2>
+                    <div class="mt-4">
+                        <t t-foreach="docs" t-as="doc">
+                           <t t-set="_raw" t-value="doc.qr_code_image or ''"/>
+                           <t t-set="qr_b64" t-value="(_raw.decode('utf-8') if isinstance(_raw, bytes) else _raw)"/>
+                           <img t-if="qr_b64" t-att-src="'data:image/png;base64,%s' % qr_b64" style="width:300px; height:300px;"/>
+                        </t>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_gym_visit_user,gym.visit.user,model_gym_visit,,1,0,0,0
+access_gym_visit_manager,gym.visit.manager,model_gym_visit,,1,1,1,1
+access_gym_announcement,gym.announcement.access,model_gym_announcement,base.group_user,1,1,1,1
